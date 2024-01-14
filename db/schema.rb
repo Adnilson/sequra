@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_14_183136) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_14_185212) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "disbursements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "reference"
+    t.string "merchant_reference"
+    t.decimal "amount", precision: 20, scale: 2
+    t.decimal "fee", precision: 20, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merchant_reference"], name: "index_disbursements_on_merchant_reference"
+    t.index ["reference", "merchant_reference"], name: "index_disbursements_on_reference_and_merchant_reference", unique: true
+    t.index ["reference"], name: "index_disbursements_on_reference", unique: true
+  end
 
   create_table "merchants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "reference"
@@ -23,6 +35,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_14_183136) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["reference"], name: "index_merchants_on_reference", unique: true
+  end
+
+  create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "merchant_reference"
+    t.string "disbursement_reference"
+    t.decimal "amount", precision: 20, scale: 2
+    t.boolean "disbursed", default: false
+    t.string "shopper_reference"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["disbursement_reference"], name: "index_orders_on_disbursement_reference"
+    t.index ["merchant_reference"], name: "index_orders_on_merchant_reference"
+    t.index ["shopper_reference"], name: "index_orders_on_shopper_reference"
   end
 
 end
