@@ -1,9 +1,22 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+require "csv"
+
+CSV.read("db/seed_files/merchants.csv", col_sep: ";", headers: true).each do |merchant|
+  Merchant.create(
+    id: merchant["id"],
+    reference: merchant["reference"],
+    email: merchant["email"],
+    live_on: merchant["live_on"],
+    disbursement_frequency: merchant["disbursement_frequency"],
+    minimum_monthly_fee: merchant["minimum_monthly_fee"]
+  )
+end
+
+# Go have a smoke after running this one
+CSV.read("db/seed_files/orders.csv", col_sep: ";", headers: true).each do |order|
+  Order.create(
+    id: order["id"],
+    merchant_reference: order["merchant_reference"],
+    amount: order["amount"],
+    created_at: order["created_at"]
+  )
+end
