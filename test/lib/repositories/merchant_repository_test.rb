@@ -1,3 +1,5 @@
+require "test_helper"
+
 module Repositories
   class MerchantRepositoryTest < Minitest::Test
     include ActiveSupport::Testing::TimeHelpers

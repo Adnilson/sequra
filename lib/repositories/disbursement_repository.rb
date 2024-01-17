@@ -6,21 +6,21 @@ module Repositories
 
     def self.create(merchant_reference)
       reference = "#{Date.today.strftime}_#{merchant_reference}_disbursement"
-      total_fee = 0.0
       total_amount = 0.0
+      total_gross_amount = 0.0
 
-      ActiveRecord.transaction do
-        Orders.where(disbursed: false, merchant_reference: merchant_reference).find_each |order| do
-          total_fee += DisbursementAmount.new(order.amount).calculate
-          total_amount += order.amount
+      ActiveRecord::Base.transaction do
+        Order.where(disbursed: false, merchant_reference: merchant_reference).find_each do |order|
+          total_amount += DisbursementAmount.new(order.amount).calculate
+          total_gross_amount += order.amount
           order.update(disbursement_reference: reference, disbursed: true)
         end
 
         Disbursement.create(
-          merchant_id: merchant_reference,
-          amount: total_amount - total_fee,
-          fee: total_fee,
-          disbursement_reference: reference
+          merchant_reference: merchant_reference,
+          amount: total_amount,
+          fee: total_gross_amount - total_amount,
+          reference: reference
         )
       end
     end
