@@ -1,12 +1,12 @@
 high: &high
   daily_disbursements:
-    cron: "0 1 * * *"
+    cron: "30 0 * * *"
     class: "::Jobs::DailyDisbursementJob"
     queue: high
     description: "Create daily disbursements"
 
   weekly_disbursements:
-    cron: "0 1 * * *"
+    cron: "30 0 * * *"
     class: "::Jobs::WeeklyDisbursementJob"
     queue: high
     description: "Create weelky disbursements"
