@@ -1,0 +1,2 @@
+class MinimumMonthlyFee < ApplicationRecord
+end
