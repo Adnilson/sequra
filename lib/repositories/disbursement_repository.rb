@@ -24,5 +24,12 @@ module Repositories
         )
       end
     end
+
+    def self.in_last_month(merchant_reference)
+      Disbursement.where(
+        "merchant_reference = ? AND created_at BETWEEN ? AND ?",
+        merchant_reference, 1.month.ago.beginning_of_month , 1.month.ago.end_of_month
+      )
+    end
   end
 end
