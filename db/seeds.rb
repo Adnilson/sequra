@@ -12,11 +12,18 @@ CSV.read("db/seed_files/merchants.csv", col_sep: ";", headers: true).each do |me
 end
 
 # Go have a smoke after running this one
+number = 1
+
 CSV.read("db/seed_files/orders.csv", col_sep: ";", headers: true).each do |order|
+
+  puts "Creating order nr. #{number}"
+
   Order.create(
     id: order["id"],
     merchant_reference: order["merchant_reference"],
     amount: order["amount"],
     created_at: order["created_at"]
   )
+
+  number += 1
 end
