@@ -43,13 +43,14 @@ class DailyDisbursementJobTest < ActiveJob::TestCase
     end
 
     disbursement = Disbursement.first
+    order = Order.find_by(merchant_reference: disbursement.merchant_reference)
     
     assert_equal 4, Order.count
     assert_equal 1, Disbursement.count
     assert_equal 160.71, disbursement.amount
     assert_equal 1.59, disbursement.fee
     assert_equal "jonas_brothers_band", disbursement.merchant_reference
-    assert_equal disbursement.reference, Order.find_by(merchant_reference: disbursement.merchant_reference).disbursement_reference
+    assert_equal disbursement.reference, order.disbursement_reference
   end
 
   test "check minimum monthly fee" do

@@ -55,7 +55,10 @@ module Repositories
       )
 
       disbursement1 = Repositories::DisbursementRepository.create(merchant1.reference)
+      order1 = Order.find_by(merchant_reference: disbursement1.merchant_reference)
+
       disbursement2 = Repositories::DisbursementRepository.create(merchant2.reference)
+      order2 = Order.find_by(merchant_reference: disbursement2.merchant_reference)
 
       assert_equal 2, Disbursement.count
       assert_equal 7, Order.where(disbursed: true).count
@@ -63,12 +66,12 @@ module Repositories
       assert_equal 160.71, disbursement1.amount
       assert_equal 1.59, disbursement1.fee
       assert_equal "jonas_brothers_band", disbursement1.merchant_reference
-      assert_equal disbursement1.reference, Order.find_by(merchant_reference: disbursement1.merchant_reference).disbursement_reference
+      assert_equal disbursement1.reference, order1.disbursement_reference
 
       assert_equal 1357.50, disbursement2.amount
       assert_equal 11.78, disbursement2.fee
       assert_equal "houthala_lala", disbursement2.merchant_reference
-      assert_equal disbursement1.reference, Order.find_by(merchant_reference: disbursement1.merchant_reference).disbursement_reference
+      assert_equal disbursement2.reference, order2.disbursement_reference
     end
   end
 end
