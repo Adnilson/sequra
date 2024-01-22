@@ -45,6 +45,8 @@
 
 * I would also find a way to have a similar table to the one you showed on the challenge instructions, but decided to create the disbursements as simple as possible for the sake of time.
 
+* There is some repetition, this is on purpose DRY not always is the best choice.
+
 * Overall I chose to use the most vanilla Rails and Ruby possible for simplicity. I like to follow one of Jonh Ousterhoust's though: *"It's more important for a module to have a simple interface than a simple implementation"*.
 
 ## Table
